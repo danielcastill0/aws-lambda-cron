@@ -1,0 +1,29 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: fenix
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: lambda-cron-sms
+
+
+
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 'SNS:Publish'
+          Resource: '*'
+       
+
+functions:
+  rateHandler:
+   #PoC purposes. Environment variables must be managed by Secret Manager
+    environment:
+      TOPIC_ARN: your_arn
+    handler: handler.run
+    events:
+      - schedule: cron(0 5 * * ? *)
+ 
+    
